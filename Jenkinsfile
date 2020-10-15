@@ -6,12 +6,20 @@ pipeline {
     stages {
         stage('Test') {
             steps {
-                sh './gradlew clean test --no-daemon'
+                in_toto_wrap(['stepName': 'Test',
+                        'credentialId': 'intoto',
+                        'transport': 'http://scribbles.ngrok.io']){
+                    sh './gradlew clean test --no-daemon'
+                }
             }
         }
         stage('Build') {
             steps {
-                sh './gradlew clean build --no-daemon'
+                in_toto_wrap(['stepName': 'Build',
+                        'credentialId': 'intoto',
+                        'transport': 'http://scribbles.ngrok.io']){
+                    sh './gradlew clean build --no-daemon'
+                }
             }
         }
         stage('Deploy') {
