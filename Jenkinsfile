@@ -6,19 +6,23 @@ pipeline {
     stages {
         stage('Test') {
             steps {
-                in_toto_wrap(['stepName': 'Test',
-                        'credentialId': 'intoto',
-                        'transport': 'http://scribbles.ngrok.io']){
-                    sh './gradlew clean test --no-daemon'
+                container('gradle') {
+                    in_toto_wrap(['stepName': 'Test',
+                            'credentialId': 'intoto',
+                            'transport': 'http://scribbles.ngrok.io']){
+                        sh './gradlew clean test --no-daemon'
+                    }
                 }
             }
         }
         stage('Build') {
             steps {
-                in_toto_wrap(['stepName': 'Build',
-                        'credentialId': 'intoto',
-                        'transport': 'http://scribbles.ngrok.io']){
-                    sh './gradlew clean build --no-daemon'
+                container('gradle') {
+                    in_toto_wrap(['stepName': 'Build',
+                            'credentialId': 'intoto',
+                            'transport': 'http://scribbles.ngrok.io']){
+                        sh './gradlew clean build --no-daemon'
+                    }
                 }
             }
         }
